@@ -69,7 +69,7 @@ export function OrderBuilder() {
     
     const subject = encodeURIComponent(`New Order from ${formData.name}`);
     const body = encodeURIComponent(generateOrderText());
-    window.location.href = `mailto:sales@offstamp-vapes.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:sales@offstamp-vape.store?subject=${subject}&body=${body}`;
     
     setStatus({ type: 'success', message: "Your email client has been opened. Please send the email to complete your order." });
     

@@ -82,11 +82,11 @@ async function run() {
   }
   
   const categories = [
-    'https://www.offstamp-vapes.com/product-category/x-cube/',
-    'https://www.offstamp-vapes.com/product-category/ice-cube/',
-    'https://www.offstamp-vapes.com/product-category/classic-cube/',
-    'https://www.offstamp-vapes.com/product-category/sweet-cube/',
-    'https://www.offstamp-vapes.com/product-category/sw9000-disposable/'
+    'https://www.offstamp-vape.store/product-category/x-cube/',
+    'https://www.offstamp-vape.store/product-category/ice-cube/',
+    'https://www.offstamp-vape.store/product-category/classic-cube/',
+    'https://www.offstamp-vape.store/product-category/sweet-cube/',
+    'https://www.offstamp-vape.store/product-category/sw9000-disposable/'
   ];
   
   let allProducts: any[] = [];

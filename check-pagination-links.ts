@@ -13,8 +13,8 @@ async function checkCategory(url: string) {
 }
 
 async function run() {
-  await checkCategory('https://www.offstamp-vapes.com/product-category/ice-cube/');
-  await checkCategory('https://www.offstamp-vapes.com/product-category/sw9000-disposable/');
+  await checkCategory('https://www.offstamp-vape.store/product-category/ice-cube/');
+  await checkCategory('https://www.offstamp-vape.store/product-category/sw9000-disposable/');
 }
 
 run();

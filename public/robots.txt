@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ais-pre-u42skqog3x5jiu5m2gnahr-763060089957.europe-west2.run.app/sitemap.xml
+Sitemap: https://offstamp-vape.store/sitemap.xml

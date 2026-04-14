@@ -55,7 +55,7 @@ export function About() {
             <div className="grid md:grid-cols-3 gap-8 mb-12">
               <div className="bg-[var(--color-surface-light)] p-6 rounded-2xl border border-gray-800">
                 <h3 className="font-bold text-lg mb-2 text-white">Fake Websites</h3>
-                <p className="text-gray-400 text-sm">Always verify you are on our official domain offstamp-vapes.com. Scammers often use slight misspellings.</p>
+                <p className="text-gray-400 text-sm">Always verify you are on our official domain offstamp-vape.store. Scammers often use slight misspellings.</p>
               </div>
               <div className="bg-[var(--color-surface-light)] p-6 rounded-2xl border border-gray-800">
                 <h3 className="font-bold text-lg mb-2 text-white">Social Media Scams</h3>

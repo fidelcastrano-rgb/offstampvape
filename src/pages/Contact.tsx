@@ -55,11 +55,11 @@ export function Contact() {
                   <p className="text-gray-500">For detailed inquiries</p>
                 </div>
               </div>
-              <a href="mailto:sales@offstamp-vapes.com" className="text-lg font-medium text-[var(--color-primary)] hover:underline block mb-6">
-                sales@offstamp-vapes.com
+              <a href="mailto:sales@offstamp-vape.store" className="text-lg font-medium text-[var(--color-primary)] hover:underline block mb-6">
+                sales@offstamp-vape.store
               </a>
               <button 
-                onClick={() => window.location.href = 'mailto:sales@offstamp-vapes.com'}
+                onClick={() => window.location.href = 'mailto:sales@offstamp-vape.store'}
                 className="w-full bg-[var(--color-primary)] text-white py-4 rounded-xl font-bold hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"
               >
                 <Mail size={20} />
