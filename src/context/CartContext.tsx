@@ -13,6 +13,7 @@ interface CartContextType {
   items: CartItem[];
   addToOrder: (item: Omit<CartItem, 'key' | 'qty'>) => void;
   removeItem: (key: string) => void;
+  updateQuantity: (key: string, qty: number) => void;
   clearOrder: () => void;
   isOrderBuilderOpen: boolean;
   setOrderBuilderOpen: (isOpen: boolean) => void;
@@ -40,10 +41,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems(prev => prev.filter(i => i.key !== key));
   };
 
+  const updateQuantity = (key: string, qty: number) => {
+    if (qty < 1) {
+      removeItem(key);
+      return;
+    }
+    setItems(prev => prev.map(i => i.key === key ? { ...i, qty } : i));
+  };
+
   const clearOrder = () => setItems([]);
 
   return (
-    <CartContext.Provider value={{ items, addToOrder, removeItem, clearOrder, isOrderBuilderOpen, setOrderBuilderOpen }}>
+    <CartContext.Provider value={{ items, addToOrder, removeItem, updateQuantity, clearOrder, isOrderBuilderOpen, setOrderBuilderOpen }}>
       {children}
     </CartContext.Provider>
   );

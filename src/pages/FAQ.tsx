@@ -7,7 +7,7 @@ const faqs = [
     questions: [
       { q: 'How do I place an order?', a: 'Use our Order Builder to select your products, then click "Order via WhatsApp" or "Order via Email". This will open a pre-filled message to our secure line where we will confirm payment and shipping details.' },
       { q: 'What payment methods do you accept?', a: 'We accept Apple Cash, Chime, and select Cryptocurrencies for maximum privacy and security.' },
-      { q: 'Is there a minimum order quantity?', a: 'No, there is no minimum order quantity. However, we offer free shipping on orders over $100.' }
+      { q: 'Is there a minimum order quantity?', a: 'Yes, we require a minimum order amount of $100.00. This total includes the subtotal of your items plus the cost of your selected shipping method.' }
     ]
   },
   {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { X, Trash2, Send, Mail, CreditCard, Bitcoin, Smartphone } from 'lucide-react';
+import { X, Trash2, Send, Mail, CreditCard, Bitcoin, Smartphone, Plus, Minus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export function OrderBuilder() {
-  const { items, removeItem, clearOrder, isOrderBuilderOpen, setOrderBuilderOpen } = useCart();
+  const { items, removeItem, updateQuantity, clearOrder, isOrderBuilderOpen, setOrderBuilderOpen } = useCart();
   const [paymentMethod, setPaymentMethod] = useState<'apple' | 'chime' | 'crypto'>('apple');
   const [shippingMethod, setShippingMethod] = useState<'standard' | 'express' | 'international' | 'overnight'>('standard');
   const [status, setStatus] = useState<{ type: 'error' | 'success', message: string } | null>(null);
@@ -24,6 +24,8 @@ export function OrderBuilder() {
   const subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
   const shippingPrice = shippingRates[shippingMethod].price;
   const total = subtotal + shippingPrice;
+  const MIN_ORDER_AMOUNT = 100;
+  const isBelowMinimum = total < MIN_ORDER_AMOUNT;
 
   const generateOrderText = () => {
     let message = `New Order from ${formData.name}\n`;
@@ -43,6 +45,10 @@ export function OrderBuilder() {
   };
 
   const handleWhatsAppOrder = () => {
+    if (isBelowMinimum) {
+      setStatus({ type: 'error', message: `Minimum order amount is $${MIN_ORDER_AMOUNT.toFixed(2)} (including shipping).` });
+      return;
+    }
     if (!formData.name || !formData.email || !formData.address) {
       setStatus({ type: 'error', message: "Please fill in all required fields (Name, Email, Address)" });
       return;
@@ -52,6 +58,10 @@ export function OrderBuilder() {
   };
 
   const handleEmailOrder = () => {
+    if (isBelowMinimum) {
+      setStatus({ type: 'error', message: `Minimum order amount is $${MIN_ORDER_AMOUNT.toFixed(2)} (including shipping).` });
+      return;
+    }
     if (!formData.name || !formData.email || !formData.address) {
       setStatus({ type: 'error', message: "Please fill in all required fields (Name, Email, Address)" });
       return;
@@ -81,7 +91,7 @@ export function OrderBuilder() {
       />
       
       {/* Sidebar */}
-      <div className="relative w-full max-w-md bg-[var(--color-surface)] text-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+      <div className="relative w-full max-w-lg bg-[var(--color-surface)] text-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
         <div className="flex items-center justify-between p-6 border-b border-gray-800">
           <h2 className="font-heading font-bold text-xl">Your Order</h2>
           <button 
@@ -101,32 +111,10 @@ export function OrderBuilder() {
               <p>Your cart is empty.</p>
             </div>
           ) : (
-            <div className="space-y-6">
-              {/* Items List */}
-              <div className="space-y-4">
-                {items.map((item) => (
-                  <div key={item.key} className="flex gap-4 items-start border-b border-gray-800 pb-4">
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-200">{item.name}</h4>
-                      {item.variant && item.variant !== 'default' && <p className="text-sm text-gray-400">{item.variant}</p>}
-                      <div className="mt-2 flex items-center justify-between">
-                        <span className="font-medium text-[var(--color-primary)]">${item.price.toFixed(2)}</span>
-                        <span className="text-sm text-gray-400">Qty: {item.qty}</span>
-                      </div>
-                    </div>
-                    <button 
-                      onClick={() => removeItem(item.key)}
-                      className="text-gray-500 hover:text-red-500 transition-colors p-1"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-
+            <div className="space-y-10">
               {/* Order Form */}
-              <div className="pt-4 space-y-4">
-                <h3 className="font-heading font-bold text-lg border-b border-gray-800 pb-2">Delivery Details</h3>
+              <div className="pt-6 pb-6 px-4 bg-gray-800/40 rounded-2xl border border-gray-700/50 space-y-5">
+                <h3 className="font-heading font-bold text-lg border-b border-gray-700 pb-2">Delivery Details</h3>
                 
                 {status && (
                   <div className={`p-3 rounded-lg text-sm ${status.type === 'error' ? 'bg-red-900/20 text-red-400 border border-red-900/50' : 'bg-green-900/20 text-green-400 border border-green-900/50'}`}>
@@ -154,6 +142,43 @@ export function OrderBuilder() {
                   value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})}
                   className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-primary)] resize-none"
                 />
+              </div>
+
+              {/* Items List */}
+              <div className="space-y-4">
+                <h3 className="font-heading font-bold text-lg border-b border-gray-800 pb-2">Your Items</h3>
+                {items.map((item) => (
+                  <div key={item.key} className="flex gap-4 items-start border-b border-gray-800 pb-4">
+                    <div className="flex-1">
+                      <h4 className="font-medium text-gray-200">{item.name}</h4>
+                      {item.variant && item.variant !== 'default' && <p className="text-sm text-gray-400">{item.variant}</p>}
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="font-medium text-[var(--color-primary)]">${item.price.toFixed(2)}</span>
+                        <div className="flex items-center gap-3 bg-gray-800 rounded-lg p-1 border border-gray-700">
+                          <button 
+                            onClick={() => updateQuantity(item.key, item.qty - 1)}
+                            className="p-1 hover:text-[var(--color-primary)] transition-colors"
+                          >
+                            <Minus size={14} />
+                          </button>
+                          <span className="text-sm font-bold min-w-[20px] text-center">{item.qty}</span>
+                          <button 
+                            onClick={() => updateQuantity(item.key, item.qty + 1)}
+                            className="p-1 hover:text-[var(--color-primary)] transition-colors"
+                          >
+                            <Plus size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => removeItem(item.key)}
+                      className="text-gray-500 hover:text-red-500 transition-colors p-1"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))}
               </div>
 
               {/* Shipping Options */}
@@ -199,6 +224,9 @@ export function OrderBuilder() {
                     <span className="text-xs font-medium">Crypto</span>
                   </button>
                 </div>
+                <p className="text-xs text-gray-500 mt-2 italic">
+                  Note: Payment details for your selected method will be emailed to you once we receive your order request.
+                </p>
               </div>
 
             </div>
@@ -220,28 +248,36 @@ export function OrderBuilder() {
                 <span className="font-medium text-gray-300">Total</span>
                 <span className="font-heading font-bold text-2xl text-[var(--color-primary)]">${total.toFixed(2)}</span>
               </div>
+              {isBelowMinimum && (
+                <div className="mt-2 p-2 bg-red-900/20 border border-red-900/50 rounded-lg text-red-400 text-[10px] leading-tight">
+                  Minimum order amount of $100.00 (subtotal + shipping) is required.
+                </div>
+              )}
             </div>
             
-            <div className="space-y-3">
+            <div className="flex gap-3">
               <button 
                 onClick={handleEmailOrder}
-                className="w-full bg-[var(--color-primary)] text-white py-3.5 rounded-xl font-medium hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"
+                disabled={isBelowMinimum}
+                className={`flex-1 bg-[var(--color-primary)] text-white py-2.5 rounded-xl font-medium transition-all flex items-center justify-center gap-2 text-sm ${isBelowMinimum ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:bg-opacity-90'}`}
               >
-                <Mail size={20} />
-                Order via Email
+                <Mail size={16} />
+                Email
               </button>
               <button 
                 onClick={handleWhatsAppOrder}
-                className="w-full bg-[#25D366] text-white py-3.5 rounded-xl font-medium hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"
+                disabled={isBelowMinimum}
+                className={`flex-1 bg-[#25D366] text-white py-2.5 rounded-xl font-medium transition-all flex items-center justify-center gap-2 text-sm ${isBelowMinimum ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:bg-opacity-90'}`}
               >
-                <Send size={20} />
-                Order via WhatsApp
+                <Send size={16} />
+                WhatsApp
               </button>
               <button 
                 onClick={clearOrder}
-                className="w-full bg-transparent text-gray-400 border border-gray-700 py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-all"
+                className="p-2.5 bg-transparent text-gray-400 border border-gray-700 rounded-xl font-medium hover:bg-gray-800 transition-all"
+                title="Clear Order"
               >
-                Clear Order
+                <Trash2 size={18} />
               </button>
             </div>
           </div>

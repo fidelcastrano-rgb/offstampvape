@@ -49,7 +49,14 @@ export function ShippingPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">4. Delivery Estimates</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">4. Minimum Order Requirement</h2>
+            <p>
+              To ensure efficient processing and delivery, we enforce a <strong>minimum order total of $100.00</strong>. This amount includes the subtotal of your items and the shipping fee. Orders below this threshold cannot be processed.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-white mb-4">5. Delivery Estimates</h2>
             <p>
               Delivery times are estimates and may vary based on your location and the selected shipping method. International delivery times can vary significantly depending on local customs processing.
             </p>
@@ -59,14 +66,14 @@ export function ShippingPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">5. Tracking</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">6. Tracking</h2>
             <p>
               Once your order has shipped, you will receive an email with a tracking number. Please allow 24 hours for the tracking information to update.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">6. Age Verification</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">7. Age Verification</h2>
             <p>
               All shipments require adult signature (21+) upon delivery. Carriers may request a valid ID to verify age.
             </p>
